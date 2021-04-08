@@ -60,10 +60,14 @@ class InteractiveRecord
         DB[:conn].execute(sql,name)
       end
 
-      def self.find_by(attribute)
-    
-        sql = "SELECT * FROM #{self.table_name} WHERE #{row} = ?"
-        DB[:conn].execute(sql, row)
+      def self.find_by(attribute_hash)
+        value = attribute_hash.values[0]
+        key = attribute_hash.keys[0]
+
+        formatted_value = value.class == Fixnum ? value : "'#{value}'" #what is this why is it necessary
+
+        sql = "SELECT * FROM #{self.table_name} WHERE #{key} = #{formatted_value}"
+        DB[:conn].execute(sql)
       end
   
 end
